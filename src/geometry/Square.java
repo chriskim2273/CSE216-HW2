@@ -1,5 +1,7 @@
 package geometry;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  * @author {add your full name here}
  */
 public class Square implements Shape {
-    
+    private Point[] vertices = new Point[4];
     /**
      * The constructor accepts an array of <code>Point</code>s to form the vertices of the square. If more than four
      * points are provided, only the first four are considered by this constructor. If less than four points are
@@ -18,7 +20,10 @@ public class Square implements Shape {
      * @param vertices the array of vertices (i.e., <code>Point</code> instances) provided to the constructor.
      */
     public Square(Point... vertices) {
-        // TODO
+        if(vertices.length < 4)
+            throw new IllegalArgumentException();
+
+        //if()
     }
     
     /**
@@ -43,7 +48,9 @@ public class Square implements Shape {
     
     @Override
     public List<Point> vertices() {
-        return null; // TODO
+        List<Point> vertexList = Arrays.asList(vertices);
+        Collections.sort(vertexList, new Counterclockwise());
+        return vertexList;
     }
     
     @Override
