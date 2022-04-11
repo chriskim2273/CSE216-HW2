@@ -14,8 +14,8 @@ import java.util.List;
  * @author {add your full name here}
  */
 public class Square implements Shape {
-    private Point[] vertices = new Point[4];
-    private double[] center = new double[2];
+    private Point[] vertices;
+    private double[] center;
     /**
      * The constructor accepts an array of <code>Point</code>s to form the vertices of the square. If more than four
      * points are provided, only the first four are considered by this constructor. If less than four points are
@@ -30,9 +30,7 @@ public class Square implements Shape {
         if(!isMember(Arrays.asList(vertices)))
             throw new IllegalArgumentException();
 
-        for(int i = 0; i < 4; i++){
-            this.vertices[i] = vertices[i];
-        }
+        this.vertices = vertices;
 
         this.center = findCenter(Arrays.asList(this.vertices));
     }
@@ -70,7 +68,7 @@ public class Square implements Shape {
             distances[i] = distances[i].setScale(3, RoundingMode.HALF_UP);
             distances[j] = distances[j].setScale(3, RoundingMode.HALF_UP);
             System.out.println(distances[i] + " " + distances[j]);
-            if(distances[i] == distances[j])
+            if(!distances[i].equals(distances[j]))
                 return false;
         }
         return true;
@@ -104,10 +102,7 @@ public class Square implements Shape {
     private boolean isCentered(List<Point> vertices){
         double[] center = findCenter(vertices);
 
-        if(center[0] != 0 || center[1] != 0)
-            return false;
-        else
-            return true;
+        return !(center[0] != 0 || center[1] != 0);
     }
 
     private Point[] centerPoints(List<Point> vertices, boolean moveToOrigin){
@@ -151,8 +146,8 @@ public class Square implements Shape {
     @Override
     public String toString() {
         String string = new String();
-        String printable_x = new String();
-        String printable_y = new String();
+        String printable_x;
+        String printable_y;
         for(Point p: vertices()){
             printable_x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP).toPlainString();
             printable_y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP).toPlainString();
