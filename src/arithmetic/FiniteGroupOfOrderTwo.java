@@ -3,7 +3,7 @@ package arithmetic;
 public class FiniteGroupOfOrderTwo implements Group<PlusOrMinusOne>{
     @Override
     public PlusOrMinusOne binaryOperation(PlusOrMinusOne one, PlusOrMinusOne other) {
-        return new PlusOrMinusOne(one.getValue() * other.getValue());
+        return new PlusOrMinusOne(Integer.parseInt(one.toString()) * Integer.parseInt(other.toString()));
     }
 
     @Override
@@ -14,7 +14,7 @@ public class FiniteGroupOfOrderTwo implements Group<PlusOrMinusOne>{
     @Override
     public PlusOrMinusOne inverseOf(PlusOrMinusOne plusOrMinusOne) {
         PlusOrMinusOne[] vs = PlusOrMinusOne.values();
-        if(plusOrMinusOne.getValue() == vs[0].getValue())
+        if(Integer.parseInt(plusOrMinusOne.toString()) == Integer.parseInt(vs[0].toString()))
             return vs[1];
         else
             return vs[0];

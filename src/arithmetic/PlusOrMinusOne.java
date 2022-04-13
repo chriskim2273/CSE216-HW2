@@ -6,10 +6,6 @@ public class PlusOrMinusOne{
 
     private int value;
 
-    public int getValue(){
-        return value;
-    }
-
     public PlusOrMinusOne(int value){
         this.value = value;
     }
