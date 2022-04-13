@@ -34,7 +34,7 @@ public class Square implements Shape {
 
         this.vertices = vertices;
 
-        this.center = findCenter(Arrays.asList(this.vertices));
+        this.center = findCenter(vertices());
     }
     
     /**
@@ -116,9 +116,7 @@ public class Square implements Shape {
     
     @Override
     public List<Point> vertices() {
-        List<Point> vertexList = Arrays.asList(vertices);
-        Collections.sort(vertexList, new Counterclockwise(vertexList.get(0)));
-        return vertexList;
+        return Arrays.asList(vertices);
     }
 
     private double[] findCenter(List<Point> vertices){
@@ -215,7 +213,6 @@ public class Square implements Shape {
 
 
         List<Point> verticesList = sortCounterClockwise(vertices());
-
 
         for(Point p: verticesList){
             String printable_x;
