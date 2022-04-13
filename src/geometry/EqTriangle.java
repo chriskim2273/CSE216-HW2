@@ -146,11 +146,23 @@ public class EqTriangle implements Shape {
     @Override
     public String toString(){
         String string = "EqTriangle: ";
-        String printable_x;
-        String printable_y;
-        for(Point p: vertices){
-            printable_x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP).toPlainString();
-            printable_y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP).toPlainString();
+        BigDecimal x;
+        BigDecimal y;
+
+        for(Point p: vertices()) {
+            String printable_x;
+            String printable_y;
+            x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP);
+            y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP);
+            if (x.doubleValue() % 1 == 0)
+                printable_x = String.valueOf(x.intValue());
+            else
+                printable_x = x.toString();
+            if (y.doubleValue() % 1 == 0)
+                printable_y = String.valueOf(y.intValue());
+            else
+                printable_y = y.toString();
+
             string += "(" + printable_x + ", " + printable_y + "), ";
         }
         return string.substring(0, string.length()-2);

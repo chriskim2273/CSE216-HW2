@@ -96,6 +96,18 @@ public class Square implements Shape {
             if(!distances[i].equals(distances[j]))
                 return false;
         }
+        distances = new BigDecimal[2];
+        for(int i = 0; i < 2; i++){
+            Point vertex_one = vertices.get(i);
+            Point vertex_two = vertices.get(i+2);
+            distances[i] = BigDecimal.valueOf(Math.sqrt(Math.pow((vertex_two.getY() - vertex_one.getY()), 2d) + (Math.pow((vertex_two.getX() - vertex_one.getX()), 2d))));
+        }
+        distances[0] = distances[0].setScale(3, RoundingMode.HALF_UP);
+        distances[1] = distances[1].setScale(3, RoundingMode.HALF_UP);
+        //System.out.println(distances[i] + " " + distances[j]);
+        if(!distances[0].equals(distances[1]))
+            return false;
+
         return true;
     }
     
@@ -196,16 +208,27 @@ public class Square implements Shape {
     @Override
     public String toString() {
         String string = "Square: ";
-        String printable_x;
-        String printable_y;
+        BigDecimal x;
+        BigDecimal y;
 
 
         List<Point> verticesList = sortCounterClockwise(vertices());
 
 
         for(Point p: verticesList){
-            printable_x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP).toPlainString();
-            printable_y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP).toPlainString();
+            String printable_x;
+            String printable_y;
+            x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP);
+            y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP);
+            if(x.doubleValue() % 1 == 0)
+                printable_x = String.valueOf(x.intValue());
+            else
+                printable_x = x.toString();
+            if(y.doubleValue() % 1 == 0)
+                printable_y = String.valueOf(y.intValue());
+            else
+                printable_y = y.toString();
+
             string += "(" + printable_x + ", " + printable_y + "), ";
         }
         return string.substring(0, string.length()-2);
