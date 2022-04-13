@@ -130,7 +130,5 @@ public class SquareSymmetries implements Symmetries<Square>{
                 symmetries.add(testSymmetry);
 
         return symmetries;
-        //0 120 240
-        //flip two of the points???
     }
 }

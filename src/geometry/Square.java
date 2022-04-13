@@ -51,8 +51,18 @@ public class Square implements Shape {
     public boolean isMember(List<Point> vertices) {
 
         /*
+
         List<Point> counterClockwiseList = new ArrayList<>(vertices);
+        List<Point> vertexList = new ArrayList<>(vertices);
         Collections.sort(counterClockwiseList, new Counterclockwise(vertices.get(0)));
+        while(!vertexList.get(0).equals(counterClockwiseList.get(0))) {
+            Point temp = vertexList.get(0);
+            vertexList.set(0, vertexList.get(vertexList.size()-1));
+            vertexList.set(vertexList.size()-1, temp);
+        }
+
+         */
+        /*
         Collections.reverse(counterClockwiseList);
 
         for(int i = 0; i < counterClockwiseList.size(); i++){
@@ -60,6 +70,9 @@ public class Square implements Shape {
                 return false;
         }
         */
+
+
+
 
         BigDecimal[] distances = new BigDecimal[4];
 
