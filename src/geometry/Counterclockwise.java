@@ -1,7 +1,6 @@
 package geometry;
 
 import java.util.Comparator;
-import java.util.List;
 
 public class Counterclockwise implements Comparator<Point> {
     private double crossProduct(double x1, double y1, double x2, double y2){
@@ -18,12 +17,6 @@ public class Counterclockwise implements Comparator<Point> {
             return 1;
         else
             return -1;
-/*
-        double cross_product = crossProduct(o1.getX(),o1.getY(),o2.getX(),o2.getY());
-        if(cross_product > 0)
-            return 1;
-        return -1;
- */
     }
 
 }

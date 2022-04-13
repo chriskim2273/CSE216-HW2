@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SquareSymmetries implements Symmetries<Square>{
 
+    //Find centroid
     private double[] findCenter(List<Point> vertices){
         double[] center = new double[2];
         for(int i = 0; i < 4; i++){
@@ -20,6 +21,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         return center;
     }
 
+    //Method to move shape/all points by certain amount
     private List<Point> movePoints(List<Point> vertices, double[] moveAmount){
         List<Point> newPoints = new ArrayList<>();
 
@@ -30,6 +32,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         return newPoints;
     }
 
+    //Moves both shapes to the same center. If the points are not shared, they are not symmetrical.
     @Override
     public boolean areSymmetric(Square s1, Square s2) {
         List<Point> s1_vertices = s1.vertices();
@@ -55,6 +58,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         return false;
     }
 
+    //Method to swap two points
     private Square swapPoints(Square square, int one, int two){
         List<Point> vertices = square.vertices();
         Point vertex_one = vertices.get(one);
@@ -70,6 +74,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         return newSquare;
     }
 
+    //Find all symmetries of square
     @Override
     public Collection<Square> symmetriesOf(Square square) {
         Collection<Square> symmetries = new ArrayList<>();

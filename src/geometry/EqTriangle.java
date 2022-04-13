@@ -12,7 +12,7 @@ import java.util.List;
  * @author {Christopher Kim}
  */
 public class EqTriangle implements Shape {
-    private Point[] vertices;
+    private Point[] vertices = new Point[3];
 
     private double[] center;
     /**
@@ -24,18 +24,15 @@ public class EqTriangle implements Shape {
      * @param vertices the array of vertices (i.e., <code>Point</code> instances) provided to the constructor.
      */
     public EqTriangle(Point... vertices) {
-/*
-        for(int i = 0; i < 3; i++) {
-            System.out.println(vertices[i]);
-        }
-
- */
+        //Checks if there are less than 3 points
         if(vertices.length < 3)
             throw new IllegalArgumentException();
         if(!isMember(Arrays.asList(vertices)))
             throw new IllegalArgumentException();
 
-        this.vertices = vertices;
+        //Only consider first 3 points in input.
+        for(int i = 0; i < 3; i++)
+            this.vertices[i] = vertices[i];
         // Sets the center
         this.center = findCenter(Arrays.asList(this.vertices));
     }
@@ -50,6 +47,8 @@ public class EqTriangle implements Shape {
      */
     @Override
     public boolean isMember(List<Point> vertices) {
+        //Check if all the sides are the same size.
+
         BigDecimal[] distances = new BigDecimal[3];
         for(int j,i = 0; i < 3; i++){
             Point vertex_one = vertices.get(i);
@@ -68,7 +67,6 @@ public class EqTriangle implements Shape {
             distances[i] = distances[i].setScale(3, RoundingMode.HALF_UP);
             distances[j] = distances[j].setScale(3, RoundingMode.HALF_UP);
 
-            //System.out.println(distances[i] + " " + distances[j]);
             if(!distances[i].equals(distances[j]))
                 return false;
         }
@@ -82,9 +80,11 @@ public class EqTriangle implements Shape {
 
     @Override
     public List<Point> vertices() {
+        //Simply return points array as List
         return Arrays.asList(this.vertices);
     }
 
+    //Find centroid of triangle.
     private double[] findCenter(List<Point> vertices){
         double[] center = new double[2];
         for(int i = 0; i < 3; i++){
@@ -98,12 +98,14 @@ public class EqTriangle implements Shape {
         return center;
     }
 
+    //Check if points are centered around the origin
     private boolean isCentered(List<Point> vertices){
         double[] center = findCenter(vertices);
 
         return !(center[0] != 0 || center[1] != 0);
     }
 
+    //Moves the points to be centered around the origin for proper rotations or moves back to original position depending on moveToOrigin boolean
     private Point[] centerPoints(List<Point> vertices, boolean moveToOrigin){
         Point[] newPoints = new Point[3];
 
@@ -117,7 +119,8 @@ public class EqTriangle implements Shape {
 
         return newPoints;
     }
-    
+
+    //Rotates the triangle
     @Override
     public EqTriangle rotateBy(int degrees) {
         Point[] points = vertices.clone();
@@ -127,9 +130,11 @@ public class EqTriangle implements Shape {
         }
 
         double radians = Math.toRadians(degrees);
+        //Check if the shape is centered around the origin, if not, move to origin.
         if(!isCentered(Arrays.asList(this.vertices))) {
             points = centerPoints(Arrays.asList(points), true);
         }
+        //Apply rotational math to all points
         for(int i = 0; i < 3; i++){
             double x = points[i].getX();
             double y = points[i].getY();
@@ -138,6 +143,7 @@ public class EqTriangle implements Shape {
             points[i] = new Point(rotated_x,rotated_y);
         }
 
+        //Return back to original position/center
         points = centerPoints(Arrays.asList(points), false);
 
         return new EqTriangle(points);
@@ -154,6 +160,8 @@ public class EqTriangle implements Shape {
             String printable_y;
             x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP);
             y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP);
+
+            //Checks if the double value is an integer. This segment is used to remove the decimal and cleanly print Integer values properly.
             if (x.doubleValue() % 1 == 0)
                 printable_x = String.valueOf(x.intValue());
             else

@@ -14,7 +14,7 @@ import java.util.List;
  * @author {Christopher Kim}
  */
 public class Square implements Shape {
-    private Point[] vertices;
+    private Point[] vertices = new Point[4];
     private double[] center;
     /**
      * The constructor accepts an array of <code>Point</code>s to form the vertices of the square. If more than four
@@ -24,16 +24,21 @@ public class Square implements Shape {
      * @param vertices the array of vertices (i.e., <code>Point</code> instances) provided to the constructor.
      */
     public Square(Point... vertices) {
+        //Check if there are less than 4 points
         if(vertices.length < 4)
             throw new IllegalArgumentException();
 
         List<Point> verticesList = Arrays.asList(vertices);
 
+        //Check if the points form a proper square.
         if(!isMember(verticesList))
             throw new IllegalArgumentException();
 
-        this.vertices = vertices;
+        //Only consider first 4 points in input.
+        for(int i = 0; i < 4; i++)
+            this.vertices[i] = vertices[i];
 
+        //Finds centroid of points
         this.center = findCenter(vertices());
     }
     
@@ -73,6 +78,7 @@ public class Square implements Shape {
         BigDecimal[] distances = new BigDecimal[4];
 
         //The method to check if it is a square implies that the points are in counter-clockwise or clockwise order.
+        //Checks if all the sides are equal and the diagonals are of equal size.
         for(int j,i = 0; i < 4; i++){
             Point vertex_one = vertices.get(i);
             if(i == 3)
@@ -80,6 +86,7 @@ public class Square implements Shape {
             else
                 j = i+1;
             Point vertex_two = vertices.get(j);
+            //Calculate distance
             distances[i] = BigDecimal.valueOf(Math.sqrt(Math.pow((vertex_two.getY() - vertex_one.getY()), 2d) + (Math.pow((vertex_two.getX() - vertex_one.getX()), 2d))));
         }
         for(int j,i = 0; i < 4; i++){
@@ -98,6 +105,7 @@ public class Square implements Shape {
         for(int i = 0; i < 2; i++){
             Point vertex_one = vertices.get(i);
             Point vertex_two = vertices.get(i+2);
+            //Calculate the distance
             distances[i] = BigDecimal.valueOf(Math.sqrt(Math.pow((vertex_two.getY() - vertex_one.getY()), 2d) + (Math.pow((vertex_two.getX() - vertex_one.getX()), 2d))));
         }
         distances[0] = distances[0].setScale(3, RoundingMode.HALF_UP);
@@ -115,10 +123,12 @@ public class Square implements Shape {
     
     @Override
     public List<Point> vertices() {
+        //Simply returns vertices array as List.
         return Arrays.asList(vertices);
     }
 
     private double[] findCenter(List<Point> vertices){
+        //Finds the centroid of the shape.
         double[] center = new double[2];
         for(int i = 0; i < 4; i++){
             center[0] += vertices.get(i).getX();
@@ -131,12 +141,14 @@ public class Square implements Shape {
         return center;
     }
 
+    //Checks if the points are centered around the origin.
     private boolean isCentered(List<Point> vertices){
         double[] center = findCenter(vertices);
 
         return !(center[0] != 0 || center[1] != 0);
     }
 
+    //Moves the points to be centered around the origin for proper rotations or moves back to original position depending on moveToOrigin boolean
     private Point[] centerPoints(List<Point> vertices, boolean moveToOrigin){
         Point[] newPoints = new Point[4];
 
@@ -152,6 +164,7 @@ public class Square implements Shape {
         return newPoints;
     }
 
+    //Rotates the square
     @Override
     public Square rotateBy(int degrees) {
         Point[] points = vertices.clone();
@@ -161,9 +174,11 @@ public class Square implements Shape {
         }
 
         double radians = Math.toRadians(degrees);
+        //If the points are not centered around the origin, move them to the origin.
         if(!isCentered(Arrays.asList(points))) {
             points = centerPoints(Arrays.asList(points), true);
         }
+        //Apply rotation math to all points
         for(int i = 0; i < 4; i++){
             double x = points[i].getX();
             double y = points[i].getY();
@@ -172,12 +187,13 @@ public class Square implements Shape {
             points[i] = new Point(rotated_x,rotated_y);
         }
 
-        //Return the shape back
+        //Return the shape back to original center position.
         points = centerPoints(Arrays.asList(points), false);
 
         return new Square(points);
     }
 
+    //Sorts the points into counter clockwise order starting with the point with the smallest x and y values.
     private List<Point> sortCounterClockwise(List<Point> vertices){
         List<Point> verticesList = new ArrayList<>(vertices);
 
@@ -200,6 +216,7 @@ public class Square implements Shape {
         verticesList.set(0, first);
         verticesList.set(index, temp);
         Collections.sort(verticesList, new Counterclockwise(first));
+        //The list is sorted clockwise order, so the list is reversed.
         Collections.reverse(verticesList);
         return verticesList;
     }
@@ -218,6 +235,8 @@ public class Square implements Shape {
             String printable_y;
             x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP);
             y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP);
+
+            //Checks if the double value is an integer. This segment is used to remove the decimal and cleanly print Integer values properly.
             if(x.doubleValue() % 1 == 0)
                 printable_x = String.valueOf(x.intValue());
             else
