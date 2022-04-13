@@ -27,7 +27,9 @@ public class Square implements Shape {
         if(vertices.length < 4)
             throw new IllegalArgumentException();
 
-        if(!isMember(Arrays.asList(vertices)))
+        List<Point> verticesList = Arrays.asList(vertices);
+
+        if(!isMember(verticesList))
             throw new IllegalArgumentException();
 
         this.vertices = vertices;
@@ -47,9 +49,19 @@ public class Square implements Shape {
      */
     @Override
     public boolean isMember(List<Point> vertices) {
-        BigDecimal[] distances = new BigDecimal[4];
 
-        Collections.sort(vertices, new Counterclockwise());
+        /*
+        List<Point> counterClockwiseList = new ArrayList<>(vertices);
+        Collections.sort(counterClockwiseList, new Counterclockwise(vertices.get(0)));
+        Collections.reverse(counterClockwiseList);
+
+        for(int i = 0; i < counterClockwiseList.size(); i++){
+            if(!counterClockwiseList.get(i).equals(vertices.get(i)))
+                return false;
+        }
+        */
+
+        BigDecimal[] distances = new BigDecimal[4];
 
         for(int j,i = 0; i < 4; i++){
             Point vertex_one = vertices.get(i);
@@ -67,7 +79,7 @@ public class Square implements Shape {
                 j = i+1;
             distances[i] = distances[i].setScale(3, RoundingMode.HALF_UP);
             distances[j] = distances[j].setScale(3, RoundingMode.HALF_UP);
-            System.out.println(distances[i] + " " + distances[j]);
+            //System.out.println(distances[i] + " " + distances[j]);
             if(!distances[i].equals(distances[j]))
                 return false;
         }
@@ -82,7 +94,7 @@ public class Square implements Shape {
     @Override
     public List<Point> vertices() {
         List<Point> vertexList = Arrays.asList(vertices);
-        Collections.sort(vertexList, new Counterclockwise());
+        Collections.sort(vertexList, new Counterclockwise(vertexList.get(0)));
         return vertexList;
     }
 
@@ -127,7 +139,6 @@ public class Square implements Shape {
         double radians = Math.toRadians(degrees);
         if(!isCentered(Arrays.asList(this.vertices))) {
             points = centerPoints(Arrays.asList(points), true);
-            System.out.println("Centered");
         }
         for(int i = 0; i < 4; i++){
             double x = points[i].getX();
@@ -142,17 +153,48 @@ public class Square implements Shape {
 
         return new Square(points);
     }
+
+    private List<Point> sortCounterClockwise(List<Point> vertices){
+        List<Point> verticesList = new ArrayList<>(vertices);
+
+        Point first = verticesList.get(0);
+        int index = 0;
+        for(int i = 0; i < verticesList.size(); i++){
+            Point current = verticesList.get(i);
+            if(current.getX() < first.getX()) {
+                first = current;
+                index = i;
+            }
+            else if(current.getX() == first.getX())
+                if(current.getY() < first.getY()) {
+                    first = current;
+                    index = i;
+                }
+        }
+
+        Point temp = verticesList.get(0);
+        verticesList.set(0, first);
+        verticesList.set(index, temp);
+        Collections.sort(verticesList, new Counterclockwise(first));
+        Collections.reverse(verticesList);
+        return verticesList;
+    }
     
     @Override
     public String toString() {
-        String string = new String();
+        String string = "Square: ";
         String printable_x;
         String printable_y;
-        for(Point p: vertices()){
+
+
+        List<Point> verticesList = sortCounterClockwise(vertices());
+
+
+        for(Point p: verticesList){
             printable_x = BigDecimal.valueOf(p.getX()).setScale(3, RoundingMode.HALF_UP).toPlainString();
             printable_y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP).toPlainString();
             string += "(" + printable_x + ", " + printable_y + "), ";
         }
-        return string;
+        return string.substring(0, string.length()-2);
     }
 }

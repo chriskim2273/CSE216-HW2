@@ -24,10 +24,12 @@ public class EqTriangle implements Shape {
      * @param vertices the array of vertices (i.e., <code>Point</code> instances) provided to the constructor.
      */
     public EqTriangle(Point... vertices) {
-
+/*
         for(int i = 0; i < 3; i++) {
             System.out.println(vertices[i]);
         }
+
+ */
         if(vertices.length < 3)
             throw new IllegalArgumentException();
         if(!isMember(Arrays.asList(vertices)))
@@ -66,7 +68,7 @@ public class EqTriangle implements Shape {
             distances[i] = distances[i].setScale(3, RoundingMode.HALF_UP);
             distances[j] = distances[j].setScale(3, RoundingMode.HALF_UP);
 
-            System.out.println(distances[i] + " " + distances[j]);
+            //System.out.println(distances[i] + " " + distances[j]);
             if(!distances[i].equals(distances[j]))
                 return false;
         }
@@ -111,7 +113,7 @@ public class EqTriangle implements Shape {
 
         //double[] center = findCenter(vertices);
 
-        System.out.println("Center: (" + center[0] + ", " + center[1] + ")");
+        //System.out.println("Center: (" + center[0] + ", " + center[1] + ")");
         for(int i = 0; i < 3; i++){
             newPoints[i] = new Point((vertices.get(i).getX() - (center[0]*negation)), (vertices.get(i).getY() - (center[1]*negation)));
         }
@@ -126,7 +128,7 @@ public class EqTriangle implements Shape {
         double radians = Math.toRadians(degrees);
         if(!isCentered(Arrays.asList(this.vertices))) {
             points = centerPoints(Arrays.asList(points), true);
-            System.out.println("Centered");
+            //System.out.println("Centered");
         }
         for(int i = 0; i < 3; i++){
             double x = points[i].getX();
@@ -143,7 +145,7 @@ public class EqTriangle implements Shape {
 
     @Override
     public String toString(){
-        String string = new String();
+        String string = "EqTriangle: ";
         String printable_x;
         String printable_y;
         for(Point p: vertices){
@@ -151,6 +153,6 @@ public class EqTriangle implements Shape {
             printable_y = BigDecimal.valueOf(p.getY()).setScale(3, RoundingMode.HALF_UP).toPlainString();
             string += "(" + printable_x + ", " + printable_y + "), ";
         }
-        return string;
+        return string.substring(0, string.length()-2);
     }
 }

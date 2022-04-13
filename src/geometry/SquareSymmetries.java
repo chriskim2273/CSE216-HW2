@@ -49,12 +49,13 @@ public class SquareSymmetries implements Symmetries<Square>{
                 BigDecimal s2_x = BigDecimal.valueOf(s2_vertices.get(j).getX()).setScale(3,RoundingMode.HALF_UP);
                 BigDecimal s1_y = BigDecimal.valueOf(s1_vertices.get(i).getY()).setScale(3,RoundingMode.HALF_UP);
                 BigDecimal s2_y = BigDecimal.valueOf(s2_vertices.get(j).getY()).setScale(3,RoundingMode.HALF_UP);
-
+/*
                 System.out.println(s1_x + " - " + s2_x);
                 System.out.println(s1_y + " - " + s2_y);
                 System.out.println("\n");
+
+ */
                 if(s1_x.equals(s2_x) && s1_y.equals(s2_y)) {
-                    System.out.println("Joe");
                     return true;
                 }
             }
@@ -82,8 +83,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         Collection<Square> symmetries = new ArrayList<>();
 
         //Rotations
-        for(int i = 0; i <= 270; i+=90){
-            System.out.println(i);
+        for(int i = 0; i <= 270; i+=1){
             try{
                 Point[] points = square.rotateBy(i).vertices().toArray(new Point[0]);
                 Square rotation = new Square(points);
@@ -112,8 +112,6 @@ public class SquareSymmetries implements Symmetries<Square>{
                 if(areSymmetric(square,testSymmetry))
                     symmetries.add(testSymmetry);
         }
-
-
 
         Square testSymmetry = new Square(square.vertices().toArray(new Point[0]));
         for(int i = 0; i < 3; i+=2) {
