@@ -11,7 +11,7 @@ import java.util.List;
  * The class impementing squares.
  * Note: you can add more methods if you want, but additional methods must be <code>private</code> or <code>protected</code>.
  *
- * @author {add your full name here}
+ * @author {Christopher Kim}
  */
 public class Square implements Shape {
     private Point[] vertices;
@@ -71,11 +71,9 @@ public class Square implements Shape {
         }
         */
 
-
-
-
         BigDecimal[] distances = new BigDecimal[4];
 
+        //The method to check if it is a square implies that the points are in counter-clockwise or clockwise order.
         for(int j,i = 0; i < 4; i++){
             Point vertex_one = vertices.get(i);
             if(i == 3)
@@ -92,10 +90,11 @@ public class Square implements Shape {
                 j = i+1;
             distances[i] = distances[i].setScale(3, RoundingMode.HALF_UP);
             distances[j] = distances[j].setScale(3, RoundingMode.HALF_UP);
-            //System.out.println(distances[i] + " " + distances[j]);
             if(!distances[i].equals(distances[j]))
                 return false;
         }
+
+        //Check diagonals
         distances = new BigDecimal[2];
         for(int i = 0; i < 2; i++){
             Point vertex_one = vertices.get(i);
@@ -104,7 +103,6 @@ public class Square implements Shape {
         }
         distances[0] = distances[0].setScale(3, RoundingMode.HALF_UP);
         distances[1] = distances[1].setScale(3, RoundingMode.HALF_UP);
-        //System.out.println(distances[i] + " " + distances[j]);
         if(!distances[0].equals(distances[1]))
             return false;
 
@@ -161,8 +159,12 @@ public class Square implements Shape {
     public Square rotateBy(int degrees) {
         Point[] points = vertices.clone();
 
+        for(int i = 0; i < points.length; i++){
+            points[i] = new Point(points[i].getX(),points[i].getY());
+        }
+
         double radians = Math.toRadians(degrees);
-        if(!isCentered(Arrays.asList(this.vertices))) {
+        if(!isCentered(Arrays.asList(points))) {
             points = centerPoints(Arrays.asList(points), true);
         }
         for(int i = 0; i < 4; i++){

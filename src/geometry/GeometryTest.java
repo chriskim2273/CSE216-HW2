@@ -1,6 +1,7 @@
 package geometry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,7 +14,6 @@ public class GeometryTest {
     
     public static void main(String... args) {
         testTriangleSymmetries();
-
         System.out.println("\n\n\n----");
         testSquareSymmetries();
     }
@@ -21,7 +21,6 @@ public class GeometryTest {
     private static void testTriangleSymmetries() {
         // t0 doesn't form a equilateral triangle. the following line is expected to throw an IllegalArgumentException
         //EqTriangle t0 = new EqTriangle(new Point(1, 1), new Point(1, 2), new Point(1, 3));
-        System.out.println(Math.sin(Math.toRadians(60)) * 2);
         EqTriangle t1 = new EqTriangle(new Point(0, 0), new Point(2, 0),
                                        new Point(1, Math.sin(Math.toRadians(60)) * 2));
         EqTriangle t2 = t1.rotateBy(10);
@@ -48,12 +47,9 @@ public class GeometryTest {
         // Your code must ensure that t1.toString() returns the following String
         // "EqTriangle: (0, 0), (2, 0), (1, 1.732)"
         // Any non-integer coordinate value must be correctly rounded and represented with three decimal places.
-        System.out.println("Symmetries: ");
+        System.out.println("EqTriangle Symmetries: ");
         for (EqTriangle t : symmetries)
             System.out.println(t.toString());
-
-
-
 
     }
     
@@ -80,9 +76,9 @@ public class GeometryTest {
         // counterclockwise ordering.
         // Any non-integer coordinate value must be correctly rounded and represented with three decimal places.
         System.out.println("Square Symmetries");
-        for (Square s : symmetries)
+        for (Square s : symmetries) {
             System.out.println(s.toString());
-
-
+            //System.out.println(Arrays.toString(s.vertices));
+        }
     }
 }

@@ -111,9 +111,6 @@ public class EqTriangle implements Shape {
         if(!moveToOrigin)
             negation = -1;
 
-        //double[] center = findCenter(vertices);
-
-        //System.out.println("Center: (" + center[0] + ", " + center[1] + ")");
         for(int i = 0; i < 3; i++){
             newPoints[i] = new Point((vertices.get(i).getX() - (center[0]*negation)), (vertices.get(i).getY() - (center[1]*negation)));
         }
@@ -125,10 +122,13 @@ public class EqTriangle implements Shape {
     public EqTriangle rotateBy(int degrees) {
         Point[] points = vertices.clone();
 
+        for(int i = 0; i < points.length; i++){
+            points[i] = new Point(points[i].getX(),points[i].getY());
+        }
+
         double radians = Math.toRadians(degrees);
         if(!isCentered(Arrays.asList(this.vertices))) {
             points = centerPoints(Arrays.asList(points), true);
-            //System.out.println("Centered");
         }
         for(int i = 0; i < 3; i++){
             double x = points[i].getX();
