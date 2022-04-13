@@ -52,17 +52,13 @@ public class Square implements Shape {
 
         /*
 
+        This code was meant to test if the given square is in counter-clockwise order, starting with the lowest x and y point.
+        However, instructions were unclear and I was unsure if I could sort in isMember and etc etc. The test class would
+        also not compile if this is done. Pretty misleading. Piazza gives mixed signals as well.
+
         List<Point> counterClockwiseList = new ArrayList<>(vertices);
         List<Point> vertexList = new ArrayList<>(vertices);
         Collections.sort(counterClockwiseList, new Counterclockwise(vertices.get(0)));
-        while(!vertexList.get(0).equals(counterClockwiseList.get(0))) {
-            Point temp = vertexList.get(0);
-            vertexList.set(0, vertexList.get(vertexList.size()-1));
-            vertexList.set(vertexList.size()-1, temp);
-        }
-
-         */
-        /*
         Collections.reverse(counterClockwiseList);
 
         for(int i = 0; i < counterClockwiseList.size(); i++){
@@ -70,6 +66,9 @@ public class Square implements Shape {
                 return false;
         }
         */
+
+        // Again, unsure if this is allowed, Piazza has mixed signals. Confusing.
+        vertices = sortCounterClockwise(vertices);
 
         BigDecimal[] distances = new BigDecimal[4];
 
