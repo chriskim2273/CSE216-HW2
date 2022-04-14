@@ -67,7 +67,7 @@ public class TriangleSymmetries implements Symmetries<EqTriangle>{
         ArrayList<EqTriangle> symmetries = new ArrayList<>();
 
         //Rotations
-        for(int i = 0; i <= 240; i+=1){
+        for(int i = 0; i < 360; i+=1){
             try{
                 Point[] points = eqTriangle.rotateBy(i).vertices().toArray(new Point[0]);
                 EqTriangle rotation = new EqTriangle(points);

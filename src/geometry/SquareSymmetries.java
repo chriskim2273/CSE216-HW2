@@ -68,8 +68,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         Square newSquare = square;
         try{
             newSquare = new Square(vertices.toArray(new Point[0]));
-        }catch(IllegalArgumentException iae){
-        }
+        }catch(IllegalArgumentException iae){}
 
         return newSquare;
     }
@@ -80,7 +79,7 @@ public class SquareSymmetries implements Symmetries<Square>{
         Collection<Square> symmetries = new ArrayList<>();
 
         //Rotations
-        for(int i = 0; i <= 270; i+=1){
+        for(int i = 0; i < 360; i+=1){
             try{
                 Square rotation = square.rotateBy(i);
                 if(areSymmetric(square,rotation))
